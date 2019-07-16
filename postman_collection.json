@@ -1,0 +1,106 @@
+{
+	"info": {
+		"_postman_id": "6d9a4209-60b0-4335-a7ed-7708749c1dc3",
+		"name": "Service Geolocation",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GET /api/geolocation",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/api/geolocation",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"geolocation"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /api/geolocation/positions",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{host}}/api/geolocation/positions",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"geolocation",
+						"positions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET /api/geolocation/position",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-user-id",
+						"value": "{{user_id}}",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{host}}/api/geolocation/position",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"geolocation",
+						"position"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST /api/geolocation/positions",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "x-user-id",
+						"value": "{{user_id}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"position\": {\n\t\t\"coords\": {\n\t        \"accuracy\": 10,\n\t        \"altitude\": null,\n\t        \"altitudeAccuracy\": null,\n\t        \"heading\": null,\n\t        \"latitude\": 51.5219099,\n\t        \"longitude\": -0.105949,\n\t        \"speed\": null\n\t    },\n    \t\"timestamp\": 1563203787039\n\t}\n}"
+				},
+				"url": {
+					"raw": "{{host}}/api/geolocation/positions",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"geolocation",
+						"positions"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
