@@ -1,12 +1,16 @@
 import { logDebug } from './log';
-import { VERSION, IS_DEV } from './config';
+import config from './config';
 import {
   newId,
   currentPositionsRepo,
   positionHistoryRepo,
 } from './db';
 
-const debug = IS_DEV;
+const debug = !! config.IS_DEV;
+
+export const initApi = (db) => {
+  // do something
+};
 
 export const api_err_handler = (err, req, res, next) => {
   if (err.name === 'UnauthorizedError') {
@@ -17,22 +21,22 @@ export const api_err_handler = (err, req, res, next) => {
 };
 
 export const api_version = (req, res) => {
-  res.json({ ts: new Date(), version: VERSION });
+  res.json({ ts: new Date(), version: config.VERSION });
 };
 
-export const api_position = (req, res) => {
+export const api_position_current = async (req, res) => {
   logDebug('GET /api/geolocation/position');
   
   const user_id = req.header('x-user-id');// special header provided by gateway
   const params = { user_id };
-  const data = currentPositionsRepo.findOne(params);
+  const data = await currentPositionsRepo().findOne(params);
   res.json(data);
 };
 
-export const api_positions_search = (req, res) => {
+export const api_positions_search = async (req, res) => {
   logDebug('GET /api/geolocation/positions');
   
-  const data = currentPositionsRepo.listAll();// TODO: search in an area
+  const data = await currentPositionsRepo().listAll();// TODO: search in an area
   res.json(data);
 };
 
@@ -42,19 +46,22 @@ export const api_positions_create = async (req, res) => {
   
   let data = {}, params;
   try {
+    const cpRepo = currentPositionsRepo();
+    const phRepo = positionHistoryRepo();
+    
     const user_id = req.header('x-user-id');// special header provided by gateway
-    let { position } = req.body;
+    const { position } = req.body;
     const ts = new Date();
     const newRow = { id: newId(), ts, user_id, position };
-    positionHistoryRepo.insertOne(newRow);// keep a copy in history
+    await phRepo.insertOne(newRow);// keep a copy in history, without await
     params = { user_id };
-    const rowIdx = currentPositionsRepo.findIdx(params);
-    const rowFound = currentPositionsRepo.findOne(params);
+    //const rowIdx = cpRepo.findIdx(params);
+    const rowFound = await cpRepo.findOne(params);
     if (rowFound) { // update
       const updatedRow = Object.assign(rowFound, { ts, position });
-      data.result = currentPositionsRepo.updateOne(rowIdx, updatedRow);
+      data.result = await cpRepo.updateOne(rowFound._id, updatedRow);
     } else { // create
-      data.result = currentPositionsRepo.insertOne(newRow);
+      data.result = await cpRepo.insertOne(newRow);
     }
   } catch (err) {
     data.error = err.message;

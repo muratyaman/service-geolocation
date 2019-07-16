@@ -1,22 +1,25 @@
 import dotenv from 'dotenv';
 import path from 'path';
-dotenv.config();
-
 import packageObj from '../package.json';
-export const VERSION = packageObj.version;
 
+dotenv.config();
 const penv = process.env;
 
-export const IS_PRODUCTION = penv.NODE_ENV && (penv.NODE_ENV === 'production');
-export const IS_TEST = penv.NODE_ENV && (penv.NODE_ENV === 'test');
-export const IS_DEV = penv.NODE_ENV && (penv.NODE_ENV === 'dev');
+let config = {
+  VERSION: packageObj.version,
+  IS_PRODUCTION: penv.NODE_ENV && (penv.NODE_ENV === 'production'),
+  IS_TEST: penv.NODE_ENV && (penv.NODE_ENV === 'test'),
+  IS_DEV: penv.NODE_ENV && (penv.NODE_ENV === 'dev'),
+};
 
-export const CONSOLE_LOG = (penv.CONSOLE_LOG || 0) && !IS_TEST;
+config = Object.assign(config, {
+  CONSOLE_LOG: (penv.CONSOLE_LOG || 0) && !config.IS_TEST,
+  HTTP_PORT: penv.HTTP_PORT || 0, // 0 to pick a free port
+  DB_ADAPTER: penv.DB_ADAPTER,
+  LOW_FILENAME: penv.LOW_FILENAME, // ../db.json
+  MONGODB_URL: penv.MONGODB_URL || 'mongodb://localhost:27017',
+  MONGODB_NAME: penv.MONGODB_NAME || 'service_geolocation',
+  PUBLIC_STATIC_DIR: penv.PUBLIC_STATIC_DIR || path.join(__dirname, '..', 'public'),
+});
 
-export const HTTP_PORT = penv.HTTP_PORT || 0;
-
-export const FILE_DB = penv.FILE_DB;
-
-export const JWT_SECRET = penv.JWT_SECRET;
-
-export const PUBLIC_STATIC_DIR = penv.PUBLIC_STATIC_DIR || path.join(__dirname, '..', 'public');
+export default config;
