@@ -2,33 +2,9 @@ import { v4 as uuid } from 'uuid';
 //import { parse, format } from 'date-fns';
 import dbAdapters from './dbAdapters';
 import { logDebug } from './log';
+import mockData from './mockData';
 
 export const newId = () => uuid();
-
-const mockCurrentPositions = () => [
-  {
-    id: uuid(),
-    ts: 1563203787031, // on server
-    user_id: uuid(),
-    position: {// raw data: https://developer.mozilla.org/en-US/docs/Web/API/Geolocation
-      coords: {
-        accuracy: 20,
-        altitude: null,
-        altitudeAccuracy: null,
-        heading: null,
-        latitude: 51.5219094,
-        longitude: -0.105946,
-        speed: null,
-      },
-      timestamp: 1563203787031,// on user device
-    },
-  }
-];
-
-const mockData = () => ({
-  current_positions: mockCurrentPositions(),
-  position_history: [],
-});
 
 const defaultData = {
   current_positions: [],
