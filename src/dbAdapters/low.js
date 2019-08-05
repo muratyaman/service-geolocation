@@ -19,8 +19,6 @@ export const newDb = async (config, data = {}) => {
   return db;
 };
 
-
-
 export const dbRepo = (name) => {
   const repoDesc = `dbRepo(${name})`;
   logDebug('NEW', repoDesc);
