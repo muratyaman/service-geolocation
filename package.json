@@ -36,10 +36,10 @@
     "@babel/register": "^7.4.4",
     "body-parser": "^1.19.0",
     "date-fns": "^1.30.1",
-    "dotenv": "^8.0.0",
+    "dotenv": "^8.1.0",
     "express": "^4.17.1",
     "lowdb": "^1.0.0",
-    "mongodb": "^3.2.7",
+    "mongodb": "^3.3.0",
     "uuid": "^3.3.2"
   }
 }
