@@ -1,6 +1,6 @@
 {
   "name": "service-geolocation",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "service for geolocation tracking",
   "main": "start-geolocation-dev.js",
   "scripts": {
